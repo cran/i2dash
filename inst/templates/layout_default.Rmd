@@ -1,0 +1,11 @@
+<% title %> <% if(!is.null(menu)) sprintf('{data-navmenu="%s"}', menu) %>
+====================================================
+
+<!-- Page created on <% date %> -->
+<% if(!is.null(sidebar)) sidebar %>
+
+Column {.tabset}
+----------------------------------------------------
+
+<% components %>
+

@@ -1,0 +1,16 @@
+```{r i2dash-global-setup}
+# Deal with operation within a switchr environment
+if (any(grepl(pattern = ".switchr", x = .libPaths()))) {
+  switchr::switchrNoUnload(TRUE)
+}
+
+# Make it possible to reuse chunk labels
+options(knitr.duplicate.label = "allow")
+
+# Set datadir variable, components should fetch their env from here!
+datadir <- "<% datadir %>"
+
+# Set up color mappings
+colormaps <- <% if(!is.null(colormap)) sprintf('readRDS(file.path(datadir, "%s"))', colormap) else sprintf("list()") %>
+```
+

@@ -1,0 +1,5 @@
+Inputs {.sidebar data-width=<% datawidth %>}
+=====================================
+
+<% content %>
+
