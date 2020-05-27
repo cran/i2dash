@@ -1,4 +1,4 @@
-1ce1beb8b5d7700f1e86643ce2221685 *DESCRIPTION
+f33f1c2360456b0626eb2981cee3e519 *DESCRIPTION
 bd24ce03766038c904ba0cf748a4e92a *LICENSE
 add5b2356ff98123c65f09201c9e4ece *NAMESPACE
 5a6a6863b3a6512d0c87437ab2ad7e44 *R/AllGenerics.R
@@ -13,9 +13,9 @@ e759418e515118e482dd4e17100e4fbc *R/pages.R
 3c17e76feafe99ff55059377fea4a04e *R/vis_objects.R
 72af229c12d245be67bc3d311afea025 *build/vignette.rds
 403ebec23f80eb449704e57d77cfba9f *inst/CITATION
-1e21f8fd5277998fb0249ce9e2ca7792 *inst/doc/i2dash-intro.R
-71fdce056476e2df119479878e1975a1 *inst/doc/i2dash-intro.Rmd
-dcb6556c3ca35e219d5fe4797239b54e *inst/doc/i2dash-intro.html
+fbdd96feb92a427273574caea5f069c3 *inst/doc/i2dash-intro.R
+a744346cc08eacfb95327d7f215ac841 *inst/doc/i2dash-intro.Rmd
+b0dd401d3c298b36417f099abb936089 *inst/doc/i2dash-intro.html
 982b84a3a96153f3258f740ebf37e01b *inst/templates/component.Rmd
 c8348dd95bf34a163f1d2277204bd00a *inst/templates/global_sidebar.Rmd
 6f71f8556d53b803eb63f9e4739f9ba0 *inst/templates/i2dash-global-setup.Rmd
@@ -25,7 +25,7 @@ be499c0ffa9310165eee2c84ae5a1928 *inst/templates/layout_default.Rmd
 132ac0940ec544cd2812a4e4f1e80f91 *inst/templates/layout_focal_left.Rmd
 ecb75bee4cd571462206e61b223a7d26 *inst/templates/layout_storyboard.Rmd
 ceaaf2ffc40ccd4ec1f739ad8d7f14a9 *inst/templates/local_sidebar.Rmd
-715875b0218af67f83ade0e9b8ec8233 *inst/templates/vis_object.Rmd
+34493ec7ac910302bce34014e10c5f7f *inst/templates/vis_object.Rmd
 a2a9767c2638c95d9ecec6fc782caacb *man/add_vis_object.Rd
 44914972597ff9656e8ce94b05863198 *man/assemble.Rd
 9430211c5397948e7879d735fe0d8530 *man/dot-add_component.Rd
@@ -47,11 +47,11 @@ f3286c272b987f9c9e08f46ea7e9d0c8 *tests/testthat/input-data/sample.jpg
 34c373c40af5326767ddbad781d41116 *tests/testthat/input-data/sample.txt
 73c6d0eaaea0062e296d137b8f8aa6fd *tests/testthat/test-accessor-methods.R
 c78fdc34dfd919307eb98226fa6087ba *tests/testthat/test-add-content.R
-5e2e8e20c4514710a1cfd85d55e61dd4 *tests/testthat/test-assemble.R
+56cffe201cdb745b459a3c9535797cf5 *tests/testthat/test-assemble.R
 ace9b3d92f2f233f7543d1babf3614ab *tests/testthat/test-i2dashboard-class.R
 b26ed38938cb6a55537d67546b7f1f5e *tests/testthat/test-internal-functions.R
 cb20495b46b069b562023ab74bf7bbf3 *tests/testthat/test-pages.R
-71fdce056476e2df119479878e1975a1 *vignettes/i2dash-intro.Rmd
+a744346cc08eacfb95327d7f215ac841 *vignettes/i2dash-intro.Rmd
 9708a445a21eba13bee49dc18617ddea *vignettes/images/example_page1.png
 c107a4191280767faed32dda887c138a *vignettes/images/example_page3.png
 8047f1ee015a0dd204c6172c42481af0 *vignettes/images/example_page4.png

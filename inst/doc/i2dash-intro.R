@@ -32,7 +32,7 @@ dashboard
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  interactivity(dashboard) <- TRUE
-#  datadir(dashboard) <- "getwd()"
+#  datadir(dashboard) <- getwd()
 #  theme(dashboard) <- "cosmo"
 #  author(dashboard) <- "John Doe, MaxMustermann"
 #  title(dashboard) <- "New dashboard title"
