@@ -15,10 +15,16 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 library(magrittr)
 
 ## ---- eval=FALSE--------------------------------------------------------------
+#  install.packages("i2dash", dependencies = TRUE)
+
+## ---- eval=FALSE--------------------------------------------------------------
 #  remotes::install_git(url = "https://gitlab.gwdg.de/loosolab/software/i2dash.git", repos = BiocManager::repositories())
 
 ## ---- eval=TRUE---------------------------------------------------------------
 library(i2dash)
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  install.packages(c("leaflet", "plotly", "ggplot2", "RColorBrewer"))
 
 ## ---- eval=TRUE---------------------------------------------------------------
 i2dashboard(
@@ -51,7 +57,7 @@ dashboard %<>%
     menu = NULL)
 
 ## ---- eval=TRUE---------------------------------------------------------------
-dashboard %<>% 
+dashboard %<>%
   add_page(
     page = "page3",
     title = "Lemurs",
@@ -63,8 +69,8 @@ dashboard %<>%
     layout = "focal_left",
     menu = "Animals")
 
-## ----fig-1, fig.cap = "Figure 1: Navigation bar of the dashboard after adding several pages.", eval = TRUE, echo = FALSE----
-knitr::include_graphics("./images/navigation.png")
+## ----fig-1, fig.cap = "Figure 1: Navigation bar of the dashboard after adding several pages.", eval = TRUE, echo = FALSE, out.width = "80%"----
+knitr::include_graphics("https://github.com/loosolab/i2dash/blob/master/vignettes/images/navigation.png?raw=true")
 
 ## ---- eval = TRUE-------------------------------------------------------------
 dashboard %<>%
@@ -73,7 +79,7 @@ dashboard %<>%
 ## ---- eval=TRUE---------------------------------------------------------------
 library(leaflet)
 leaflet() %>%
-  addTiles() %>%  
+  addTiles() %>%
   addMarkers(lng=174.768, lat=-36.852,
              popup="The birthplace of R") -> leaftlet_map
 
@@ -98,10 +104,24 @@ dashboard %<>%
                 page = "page1",
                 title = "A plot from ggplot2")
 
-## ----fig-2, fig.cap = "Figure 2: The resulting page with three components added after assembly of the dashboard.", eval = TRUE, echo = FALSE----
-knitr::include_graphics("./images/example_page1.png")
+## ----fig-2, fig.cap = "Figure 2: The resulting page with three components added after assembly of the dashboard.", eval = TRUE, echo = FALSE, out.width = "80%"----
+knitr::include_graphics("https://github.com/loosolab/i2dash/blob/master/vignettes/images/example_page1.png?raw=true")
 
 ## ---- eval = TRUE-------------------------------------------------------------
+# download the image & text or use the files in the package
+dir.create("images")
+dir.create("texts")
+
+if(!file.exists("images/lemur.jpg")){
+  img <- "https://upload.wikimedia.org/wikipedia/commons/7/77/Lemurs.jpg"
+  download.file(img,'images/lemur.jpg', mode = 'wb')
+}
+
+if(!file.exists("texts/lemurs.md")){
+  text <- readLines("https://en.wikipedia.org/wiki/Lemuriformes")
+  cat(text[277],file="texts/lemurs.md",sep="\n")
+}
+
 dashboard %<>%
   add_component(file.path("images/lemur.jpg"),
                 page = "page3",
@@ -110,8 +130,8 @@ dashboard %<>%
                 page = "page3",
                 title = "About Lemurs")
 
-## ----fig-3, fig.cap = "Figure 3: The resulting page with an image and text from a file.", eval = TRUE, echo = FALSE----
-knitr::include_graphics("./images/example_page3.png")
+## ----fig-3, fig.cap = "Figure 3: The resulting page with an image and text from a file.", eval = TRUE, echo = FALSE, out.width = "80%"----
+knitr::include_graphics("https://github.com/loosolab/i2dash/blob/master/vignettes/images/example_page3.png?raw=true")
 
 ## ---- eval = TRUE-------------------------------------------------------------
 text_generator <- function(dashboard, n) {
@@ -126,8 +146,8 @@ dashboard %<>%
                 page = "page4",
                 n = 4)
 
-## ----fig-4, fig.cap = "Figure 4: The resulting page with content generated from a function.", eval = TRUE, echo = FALSE----
-knitr::include_graphics("./images/example_page4.png")
+## ----fig-4, fig.cap = "Figure 4: The resulting page with content generated from a function.", eval = TRUE, echo = FALSE, out.width = "80%"----
+knitr::include_graphics("https://github.com/loosolab/i2dash/blob/master/vignettes/images/example_page4.png?raw=true")
 
 ## ---- eval = TRUE-------------------------------------------------------------
 # load the `txhousing` dataset
@@ -165,8 +185,8 @@ dashboard %<>%
   add_component(page="page5", component=dot_plot) %>%
   add_component(page="page5", component=time_series)
 
-## ----fig-5, fig.cap = "Figure 5: The resulting page with two linked components.", eval = TRUE, echo = FALSE----
-knitr::include_graphics("./images/example_page5.png")
+## ----fig-5, fig.cap = "Figure 5: The resulting page with two linked components.", eval = TRUE, echo = FALSE, out.width = "80%"----
+knitr::include_graphics("https://github.com/loosolab/i2dash/blob/master/vignettes/images/example_page5.png?raw=true")
 
 ## ---- eval = FALSE------------------------------------------------------------
 #  year <- factor(c(2014, 2014, 2015, 2017, 2019, 2019), levels = c(2014:2021))
