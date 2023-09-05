@@ -10,11 +10,12 @@
 
 
 
+<meta name="date" content="2023-09-05" />
 
 <title>Creating iterative and interactive dashboards with i2dash</title>
 
-<script src="i2dash-intro_files/header-attrs-2.7/header-attrs.js"></script>
-<script src="i2dash-intro_files/jquery-1.11.3/jquery.min.js"></script>
+<script src="i2dash-intro_files/header-attrs-2.24/header-attrs.js"></script>
+<script src="i2dash-intro_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="i2dash-intro_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="i2dash-intro_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -29,14 +30,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="i2dash-intro_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="i2dash-intro_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="i2dash-intro_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="i2dash-intro_files/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="i2dash-intro_files/navigation-1.1/tabsets.js"></script>
 <link href="i2dash-intro_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="i2dash-intro_files/highlightjs-9.12.0/highlight.js"></script>
-<link href="i2dash-intro_files/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="i2dash-intro_files/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="i2dash-intro_files/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="i2dash-intro_files/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -57,6 +58,7 @@ if (window.hljs) {
   }
 }
 </script>
+
 
 
 
@@ -86,6 +88,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -105,8 +110,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -114,16 +119,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -227,12 +225,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -241,30 +239,62 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Creating iterative and interactive dashboards with i2dash</h1>
+<h1 class="title toc-ignore">Creating iterative and interactive
+dashboards with i2dash</h1>
 <h4 class="author">Jens Preussner</h4>
-<a class="author_email" href="mailto:#"><a href="mailto:jens.preussner@mpi-bn.mpg.de" class="email">jens.preussner@mpi-bn.mpg.de</a></a>
+<a class="author_email" href="mailto:#"><a
+href="mailto:jens.preussner@mpi-bn.mpg.de"
+class="email">jens.preussner@mpi-bn.mpg.de</a></a>
 </address>
 <h4 class="author">Arsenij Ustjanzew</h4>
-<a class="author_email" href="mailto:#"><a href="mailto:arsenij.ustjanzew@gmail.com" class="email">arsenij.ustjanzew@gmail.com</a></a>
+<a class="author_email" href="mailto:#"><a
+href="mailto:arsenij.ustjanzew@gmail.com"
+class="email">arsenij.ustjanzew@gmail.com</a></a>
 </address>
-<h4 class="date">28 März 2021</h4>
+<h4 class="date">5 September 2023</h4>
 
 </div>
 
 
-<p>Vignette last complied on 2021-03-28. i2dash is licenced under MIT + file LICENSE.</p>
+<p>Vignette last complied on 2023-09-05. i2dash is licenced under MIT +
+file LICENSE.</p>
 <p><img src="https://github.com/loosolab/i2dash/blob/master/vignettes/images/i2dash_logo.png?raw=true" align="center" width="150px"/></p>
 <div id="introduction-and-scope" class="section level1">
 <h1>Introduction and scope</h1>
-<p>Scientific communication and data visualization are important aspects to illustrate complex concepts and results from data analyses. <a href="https://rmarkdown.rstudio.com">R Markdown</a> enables weaving together narrative text and code into rich and reproducible documents, that can also run interactive widgets from <a href="https://shiny.rstudio.com/">R Shiny</a>. R Studio’s <a href="https://rmarkdown.rstudio.com/flexdashboard/">Flexdashboard</a> introduces dashboards to publish a group of related data visualizations, tables, images and narrative text in row and column-based layouts. Both, R Markdown and R Studio’s Flexdashboard require authors to manually create Markdown documents and assemble content at the right position in the file. The R package <strong>i2dash</strong> provides classes and functionality to programatically create customized, web-based flexdashboards for data presentation, exploration and sharing. This enables users from different scientific disciplines to present their diverse data to the public in the form of organized dashboards. Dashboard content is organised in so-called <strong>components</strong> and can be added iteratively to the dashboard, <em>i.e.</em> as data or visualizations become available along the analysis pipeline. Components are reusable and can be distributed across different dashboard <strong>pages</strong> to organize scientific findings thematically. Ultimately, i2dash supports a wide range of R objects (e.g. ‘htmlwidgets’) and custom content generating functions as input and therefore integrates well into existing data analysis pipelines.</p>
+<p>Scientific communication and data visualization are important aspects
+to illustrate complex concepts and results from data analyses. <a
+href="https://rmarkdown.rstudio.com">R Markdown</a> enables weaving
+together narrative text and code into rich and reproducible documents,
+that can also run interactive widgets from <a
+href="https://shiny.posit.co/">R Shiny</a>. R Studio’s <a
+href="https://pkgs.rstudio.com/flexdashboard/">Flexdashboard</a>
+introduces dashboards to publish a group of related data visualizations,
+tables, images and narrative text in row and column-based layouts. Both,
+R Markdown and R Studio’s Flexdashboard require authors to manually
+create Markdown documents and assemble content at the right position in
+the file. The R package <strong>i2dash</strong> provides classes and
+functionality to programatically create customized, web-based
+flexdashboards for data presentation, exploration and sharing. This
+enables users from different scientific disciplines to present their
+diverse data to the public in the form of organized dashboards.
+Dashboard content is organised in so-called <strong>components</strong>
+and can be added iteratively to the dashboard, <em>i.e.</em> as data or
+visualizations become available along the analysis pipeline. Components
+are reusable and can be distributed across different dashboard
+<strong>pages</strong> to organize scientific findings thematically.
+Ultimately, i2dash supports a wide range of R objects
+(e.g. ‘htmlwidgets’) and custom content generating functions as input
+and therefore integrates well into existing data analysis pipelines.</p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
-<p>The package can be installed with the <em><a href="https://CRAN.R-project.org/package=remotes">remotes</a></em> library:</p>
+<p>The package can be installed with the <em><a
+href="https://CRAN.R-project.org/package=remotes">remotes</a></em>
+library:</p>
 <pre class="r"><code>install.packages(&quot;i2dash&quot;, dependencies = TRUE)</code></pre>
 <p>or the development version:</p>
 <pre class="r"><code>remotes::install_git(url = &quot;https://gitlab.gwdg.de/loosolab/software/i2dash.git&quot;, repos = BiocManager::repositories())</code></pre>
-<p>Once installed, the package can be loaded and attached to your current workspace as follows:</p>
+<p>Once installed, the package can be loaded and attached to your
+current workspace as follows:</p>
 <pre class="r"><code>library(i2dash)</code></pre>
 <p>For this tutorial we need to install the following packages:</p>
 <pre class="r"><code>install.packages(c(&quot;leaflet&quot;, &quot;plotly&quot;, &quot;ggplot2&quot;, &quot;RColorBrewer&quot;))</code></pre>
@@ -274,25 +304,43 @@ div.tocify {
 <h1>Working with i2dash</h1>
 <div id="creating-a-dashboard" class="section level2">
 <h2>Creating a dashboard</h2>
-<p>i2dash introduces a new S4 class called <code>i2dashboard</code>. We start by creating an instance of the <code>i2dashboard</code> class and set some relevant parameters:</p>
+<p>i2dash introduces a new S4 class called <code>i2dashboard</code>. We
+start by creating an instance of the <code>i2dashboard</code> class and
+set some relevant parameters:</p>
 <ul>
-<li><code>title</code> - the dashboard’s title, as it will appear in the left corner of the navigation bar.</li>
-<li><code>author</code>- the name of the dashboard author, it will also appear in the navigation bar.</li>
-<li><code>interactive</code> - if set to <code>TRUE</code> a shiny-based dashboard will be created, otherwise a static HTML file.</li>
-<li><code>theme</code> - changes the appearance of the dashboard. A variety of themes are available at <a href="https://rmarkdown.rstudio.com/flexdashboard/using.html#appearance">R Studio’s Flexdashboard</a> or <a href="https://semantic-ui-forest.com/themes/">Semantic UI forest</a>.</li>
-<li><code>datadir</code> - defines the directory where dashboard files are stored.</li>
+<li><code>title</code> - the dashboard’s title, as it will appear in the
+left corner of the navigation bar.</li>
+<li><code>author</code>- the name of the dashboard author, it will also
+appear in the navigation bar.</li>
+<li><code>interactive</code> - if set to <code>TRUE</code> a shiny-based
+dashboard will be created, otherwise a static HTML file.</li>
+<li><code>theme</code> - changes the appearance of the dashboard. A
+variety of themes are available at <a
+href="https://pkgs.rstudio.com/flexdashboard/using.html#appearance">R
+Studio’s Flexdashboard</a> or <a
+href="https://semantic-ui-forest.com/themes/">Semantic UI
+forest</a>.</li>
+<li><code>datadir</code> - defines the directory where dashboard files
+are stored.</li>
 </ul>
 <pre class="r"><code>i2dashboard(
   title = &quot;Dashboard title&quot;,
   author = &quot;John Doe&quot;,
   interactive = FALSE,
   theme = &quot;yeti&quot;) -&gt; dashboard</code></pre>
-<p>We can examine the <code>i2dashboard</code> object by calling the object. The output shows the title of the dashboard, the number of saved pages and the number of components the page contains. By default the <code>i2dashboard</code> object contains the ‘default’ page without any components.</p>
+<p>We can examine the <code>i2dashboard</code> object by calling the
+object. The output shows the title of the dashboard, the number of saved
+pages and the number of components the page contains. By default the
+<code>i2dashboard</code> object contains the ‘default’ page without any
+components.</p>
 <pre class="r"><code>dashboard
 #&gt; A flexdashboard with the title: Dashboard title
 #&gt; ... containing  1 pages:
 #&gt;  ... the page &#39;default&#39; with the title &#39;Default page&#39; contains 0 components.</code></pre>
-<p>With several accessor methods, it is also possible to change the slots <code>interactive</code>, <code>author</code>, <code>theme</code>, <code>datadir</code> and <code>title</code> of the <code>i2dashboard</code> object retrospectively:</p>
+<p>With several accessor methods, it is also possible to change the
+slots <code>interactive</code>, <code>author</code>, <code>theme</code>,
+<code>datadir</code> and <code>title</code> of the
+<code>i2dashboard</code> object retrospectively:</p>
 <pre class="r"><code>interactivity(dashboard) &lt;- TRUE
 datadir(dashboard) &lt;- getwd()
 theme(dashboard) &lt;- &quot;cosmo&quot;
@@ -301,7 +349,11 @@ title(dashboard) &lt;- &quot;New dashboard title&quot;</code></pre>
 </div>
 <div id="adding-and-removing-pages" class="section level2">
 <h2>Adding and removing pages</h2>
-<p>We next use the <code>add_page()</code> function to add two pages to the <code>dashboard</code> object. The first argument (<code>page</code>) sets an unique page identifier that will be used later to add components to it. The <code>title</code> defines a title of the page, which is shown in the navigation bar.</p>
+<p>We next use the <code>add_page()</code> function to add two pages to
+the <code>dashboard</code> object. The first argument
+(<code>page</code>) sets an unique page identifier that will be used
+later to add components to it. The <code>title</code> defines a title of
+the page, which is shown in the navigation bar.</p>
 <pre class="r"><code>dashboard %&lt;&gt;% 
   add_page(
     page = &quot;page1&quot;,
@@ -313,7 +365,8 @@ title(dashboard) &lt;- &quot;New dashboard title&quot;</code></pre>
     title = &quot;Page 2&quot;,
     layout = &quot;focal_left&quot;,
     menu = NULL)</code></pre>
-<p>We can use the <code>menu</code> parameter to group several pages under a common drop-down menu:</p>
+<p>We can use the <code>menu</code> parameter to group several pages
+under a common drop-down menu:</p>
 <pre class="r"><code>dashboard %&lt;&gt;%
   add_page(
     page = &quot;page3&quot;,
@@ -331,13 +384,26 @@ title(dashboard) &lt;- &quot;New dashboard title&quot;</code></pre>
 Figure 1: Navigation bar of the dashboard after adding several pages.
 </p>
 </div>
-<p>We can remove a page using the <code>remove_page()</code> function. The <code>page</code> argument contains the unique page identifier of the page to be removed.</p>
+<p>We can remove a page using the <code>remove_page()</code> function.
+The <code>page</code> argument contains the unique page identifier of
+the page to be removed.</p>
 <pre class="r"><code>dashboard %&lt;&gt;%
   remove_page(page = &quot;page2&quot;)</code></pre>
 </div>
 <div id="adding-content" class="section level2">
 <h2>Adding content</h2>
-<p>Content can be added to pages using <strong>components</strong>. A component can be a R object itself (<em>e.g.</em> a widget from <a href="https://gallery.htmlwidgets.org/">htmwlwidgets</a>), a file path (<em>e.g.</em> to a markdown or image file) or a function that can be called to generate content. Htmlwidgets are interactive visualizations embedded in HTML. There is a wide variety of R packages that offer htmlwidgets, ranging from various plots, heatmaps, networks, tables, geographical maps to specialized charts. Thus, the content of the dashboards is not limited to specific disciplines and can be designed in a maximum variety of ways. We’ll use the <code>add_component</code> function to explore several options and fill <code>page1</code> iteratively with three R objects:</p>
+<p>Content can be added to pages using <strong>components</strong>. A
+component can be a R object itself (<em>e.g.</em> a widget from <a
+href="https://gallery.htmlwidgets.org/">htmwlwidgets</a>), a file path
+(<em>e.g.</em> to a markdown or image file) or a function that can be
+called to generate content. Htmlwidgets are interactive visualizations
+embedded in HTML. There is a wide variety of R packages that offer
+htmlwidgets, ranging from various plots, heatmaps, networks, tables,
+geographical maps to specialized charts. Thus, the content of the
+dashboards is not limited to specific disciplines and can be designed in
+a maximum variety of ways. We’ll use the <code>add_component</code>
+function to explore several options and fill <code>page1</code>
+iteratively with three R objects:</p>
 <pre class="r"><code>library(leaflet)
 leaflet() %&gt;%
   addTiles() %&gt;%
@@ -368,12 +434,18 @@ dashboard %&lt;&gt;%
 <div class="figure">
 <img src="https://github.com/loosolab/i2dash/blob/master/vignettes/images/example_page1.png?raw=true" alt="Figure 2: The resulting page with three components added after assembly of the dashboard." width="80%" />
 <p class="caption">
-Figure 2: The resulting page with three components added after assembly of the dashboard.
+Figure 2: The resulting page with three components added after assembly
+of the dashboard.
 </p>
 </div>
 <div id="adding-text-and-images" class="section level3">
 <h3>Adding text and images</h3>
-<p>Custom text and images allow the dashboard developer to explain his findings, name sources or provide guidance to the reader. Text and images can be added to a <strong>page</strong> by calling the <code>add_component</code> function with a file path. The function will include file paths ending with <code>.[png|jpg|jpeg|gif]</code> as image content, and other files as text content:</p>
+<p>Custom text and images allow the dashboard developer to explain his
+findings, name sources or provide guidance to the reader. Text and
+images can be added to a <strong>page</strong> by calling the
+<code>add_component</code> function with a file path. The function will
+include file paths ending with <code>.[png|jpg|jpeg|gif]</code> as image
+content, and other files as text content:</p>
 <pre class="r"><code># download the image &amp; text or use the files in the package
 dir.create(&quot;images&quot;)
 dir.create(&quot;texts&quot;)
@@ -405,18 +477,24 @@ Figure 3: The resulting page with an image and text from a file.
 </div>
 <div id="adding-content-from-functions" class="section level3">
 <h3>Adding content from functions</h3>
-<p>Near unlimited flexibility comes from the ability to pass functions to <code>add_component</code>. Functions can be used to <em>generate</em> content based on their parameters when they’re called. Lets create such a function:</p>
+<p>Near unlimited flexibility comes from the ability to pass functions
+to <code>add_component</code>. Functions can be used to
+<em>generate</em> content based on their parameters when they’re called.
+Lets create such a function:</p>
 <pre class="r"><code>text_generator &lt;- function(dashboard, n) {
   stringi::stri_rand_lipsum(nparagraphs = n) %&gt;%
     paste(collapse = &quot;\n\n&quot;) -&gt; content
   paste0(&quot;### Generated content\n\n&quot;, content)
 }</code></pre>
-<p>The function <code>text_generator</code> from above can generate <code>n</code> paragraphs of Lorem Ipsum upon calling. We can include it’s return as content:</p>
+<p>The function <code>text_generator</code> from above can generate
+<code>n</code> paragraphs of Lorem Ipsum upon calling. We can include
+it’s return as content:</p>
 <pre class="r"><code>dashboard %&lt;&gt;%
   add_component(text_generator,
                 page = &quot;page4&quot;,
                 n = 4)</code></pre>
-<p>When writing your own generating functions, please keep it mind to set the <code>title</code> of the component within the function:</p>
+<p>When writing your own generating functions, please keep it mind to
+set the <code>title</code> of the component within the function:</p>
 <div class="figure">
 <img src="https://github.com/loosolab/i2dash/blob/master/vignettes/images/example_page4.png?raw=true" alt="Figure 4: The resulting page with content generated from a function." width="80%" />
 <p class="caption">
@@ -426,14 +504,30 @@ Figure 4: The resulting page with content generated from a function.
 </div>
 <div id="linking-components" class="section level3">
 <h3>Linking components</h3>
-<p>The linking of several components enables an improvement in the communication of the structure of <strong>high-dimensional data</strong>, which plays a big role in most scientific fields. When linking several components, the data of the two visualizations are connected to each other by queries. Thus the interactive manipulation, e.g. selecting data points, of a component is transferred to the associated component.The package <code>plotly</code> enables us to link plotly charts in a client-side way (i.e., no special web server or callback to R is required). The following example demonstrates, how to link two plots together by using plotly. <a href="https://plotly-r.com/client-side-linking.html">Here</a> you can find a detailed explanation and further examples of the clint-sided linkink mechanism of <code>plotly</code>.</p>
-<p>First, we load the data and create an object of class <code>crosstalk::SharedData</code> with the function <code>highlight_key</code>. This enables to query the data.</p>
+<p>The linking of several components enables an improvement in the
+communication of the structure of <strong>high-dimensional
+data</strong>, which plays a big role in most scientific fields. When
+linking several components, the data of the two visualizations are
+connected to each other by queries. Thus the interactive manipulation,
+e.g. selecting data points, of a component is transferred to the
+associated component.The package <code>plotly</code> enables us to link
+plotly charts in a client-side way (i.e., no special web server or
+callback to R is required). The following example demonstrates, how to
+link two plots together by using plotly. <a
+href="https://plotly-r.com/client-side-linking.html">Here</a> you can
+find a detailed explanation and further examples of the clint-sided
+linkink mechanism of <code>plotly</code>.</p>
+<p>First, we load the data and create an object of class
+<code>crosstalk::SharedData</code> with the function
+<code>highlight_key</code>. This enables to query the data.</p>
 <pre class="r"><code># load the `txhousing` dataset
 data(txhousing, package = &quot;ggplot2&quot;)
 
 # declare `city` as the SQL &#39;query by&#39; column
 tx &lt;- highlight_key(txhousing, ~city)</code></pre>
-<p>Next, we initiate a plotly object (<code>base</code>) with the data object. And create two further plots (<code>time_series</code> and <code>dot_plot</code>) based on the new plotly object.</p>
+<p>Next, we initiate a plotly object (<code>base</code>) with the data
+object. And create two further plots (<code>time_series</code> and
+<code>dot_plot</code>) based on the new plotly object.</p>
 <pre class="r"><code># initiate a plotly object
 base &lt;- plot_ly(tx, color = I(&quot;black&quot;)) %&gt;%
   group_by(city)
@@ -455,12 +549,15 @@ dot_plot &lt;- base %&gt;%
     xaxis = list(title = &quot;Number of months missing&quot;),
     yaxis = list(title = &quot;&quot;)
   )</code></pre>
-<p>Finally, we add a new page to our dashboard, create two components and provide the <code>plotly</code> objects as input.</p>
+<p>Finally, we add a new page to our dashboard, create two components
+and provide the <code>plotly</code> objects as input.</p>
 <pre class="r"><code>dashboard %&lt;&gt;%
   add_page(page=&quot;page5&quot;, layout=&quot;2x2_grid&quot;, title = &quot;Linked components&quot;) %&gt;%
   add_component(page=&quot;page5&quot;, component=dot_plot) %&gt;%
   add_component(page=&quot;page5&quot;, component=time_series)</code></pre>
-<p>This results in the following dashboard page. We can select a data point in the left component and the lines of the right plot will be colour highlightened according to the selection:</p>
+<p>This results in the following dashboard page. We can select a data
+point in the left component and the lines of the right plot will be
+colour highlightened according to the selection:</p>
 <div class="figure">
 <img src="https://github.com/loosolab/i2dash/blob/master/vignettes/images/example_page5.png?raw=true" alt="Figure 5: The resulting page with two linked components." width="80%" />
 <p class="caption">
@@ -471,78 +568,107 @@ Figure 5: The resulting page with two linked components.
 </div>
 <div id="colormaps" class="section level2">
 <h2>Colormaps</h2>
-<p>Data analysis often have certain experimental factors (<em>e.g.</em> year or category) that are included repeatedly in figure scales. When communicating findings from such analysis, it would be desirable to have consitent representation (<em>e.g.</em> by color) of those factors across different figures. In i2dash, we solve this problem by introducing <strong>colormaps</strong>. Colormaps can be used by components to look up color scales for experimental factors. Here, we briefly introduce how colormaps are added to the dashboard, but refer to the development vignette for further information.</p>
+<p>Data analysis often have certain experimental factors (<em>e.g.</em>
+year or category) that are included repeatedly in figure scales. When
+communicating findings from such analysis, it would be desirable to have
+consitent representation (<em>e.g.</em> by color) of those factors
+across different figures. In i2dash, we solve this problem by
+introducing <strong>colormaps</strong>. Colormaps can be used by
+components to look up color scales for experimental factors. Here, we
+briefly introduce how colormaps are added to the dashboard, but refer to
+the development vignette for further information.</p>
 <p>Lets assume we have an experimental factor called year:</p>
 <pre class="r"><code>year &lt;- factor(c(2014, 2014, 2015, 2017, 2019, 2019), levels = c(2014:2021))</code></pre>
-<p>To assign each level a color from the <a href="https://colorbrewer2.org/">sequential greens</a> palette from the <em><a href="https://CRAN.R-project.org/package=RColorBrewer">RColorBrewer</a></em> package, we create a character vector with the colors and assign the levels as names.</p>
+<p>To assign each level a color from the <a
+href="https://colorbrewer2.org/">sequential greens</a> palette from the
+<em><a
+href="https://CRAN.R-project.org/package=RColorBrewer">RColorBrewer</a></em>
+package, we create a character vector with the colors and assign the
+levels as names.</p>
 <pre class="r"><code>colors &lt;- RColorBrewer::brewer.pal(8, &quot;BuGn&quot;)
 names(colors) &lt;- levels(year)</code></pre>
-<p>The colormap can then be added to the dashboard. From there on, <strong>components</strong> can consume the colormap and use the desired colors for figure scales.</p>
+<p>The colormap can then be added to the dashboard. From there on,
+<strong>components</strong> can consume the colormap and use the desired
+colors for figure scales.</p>
 <pre class="r"><code>dashboard %&lt;&gt;%
   add_colormap(map = colors,
                name = &quot;year&quot;)</code></pre>
 </div>
 <div id="dashboard-assembly" class="section level2">
 <h2>Dashboard assembly</h2>
-<p>At any point in time, and particular when data analysis is finished, the <code>assemble</code> function can be used to generate representation of the dashboard in R markdown format. Using the <code>pages</code> parameter, we can define which pages will be included in the output.</p>
+<p>At any point in time, and particular when data analysis is finished,
+the <code>assemble</code> function can be used to generate
+representation of the dashboard in R markdown format. Using the
+<code>pages</code> parameter, we can define which pages will be included
+in the output.</p>
 <pre class="r"><code>dashboard %&gt;%
   assemble(file = &quot;MyDashboard.Rmd&quot;, pages = c(&quot;page1&quot;, &quot;page3&quot;, &quot;page4&quot;, &quot;page5&quot;))</code></pre>
-<p>The resulting R Markdown file can be run with <em><a href="https://CRAN.R-project.org/package=shiny">shiny</a></em> or rendered with <em><a href="https://CRAN.R-project.org/package=rmarkdown">rmarkdown</a></em>. Alternatively, open the R Markdown file in RStudio and click on the “Knit”/ “Run Dockument” button.</p>
+<p>The resulting R Markdown file can be run with <em><a
+href="https://CRAN.R-project.org/package=shiny">shiny</a></em> or
+rendered with <em><a
+href="https://CRAN.R-project.org/package=rmarkdown">rmarkdown</a></em>.
+Alternatively, open the R Markdown file in RStudio and click on the
+“Knit”/ “Run Dockument” button.</p>
 </div>
 </div>
 <div id="session-info" class="section level1 unnumbered">
 <h1 class="unnumbered">Session Info</h1>
 <pre class="r"><code>sessionInfo()
-#&gt; R version 4.0.4 (2021-02-15)
+#&gt; R version 4.3.1 (2023-06-16 ucrt)
 #&gt; Platform: x86_64-w64-mingw32/x64 (64-bit)
-#&gt; Running under: Windows 10 x64 (build 19042)
+#&gt; Running under: Windows 10 x64 (build 19044)
 #&gt; 
 #&gt; Matrix products: default
 #&gt; 
+#&gt; 
 #&gt; locale:
-#&gt; [1] LC_COLLATE=C                    LC_CTYPE=German_Germany.1252   
-#&gt; [3] LC_MONETARY=German_Germany.1252 LC_NUMERIC=C                   
-#&gt; [5] LC_TIME=German_Germany.1252    
+#&gt; [1] LC_COLLATE=C                    LC_CTYPE=German_Germany.utf8   
+#&gt; [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
+#&gt; [5] LC_TIME=German_Germany.utf8    
+#&gt; 
+#&gt; time zone: Europe/Berlin
+#&gt; tzcode source: internal
 #&gt; 
 #&gt; attached base packages:
 #&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     
 #&gt; 
 #&gt; other attached packages:
-#&gt; [1] plotly_4.9.3     ggplot2_3.3.3    leaflet_2.0.4.1  i2dash_0.2.3    
-#&gt; [5] magrittr_2.0.1   BiocStyle_2.18.1
+#&gt; [1] plotly_4.10.2    ggplot2_3.4.3    leaflet_2.2.0    i2dash_0.2.4    
+#&gt; [5] magrittr_2.0.3   BiocStyle_2.28.0
 #&gt; 
 #&gt; loaded via a namespace (and not attached):
-#&gt;  [1] tidyselect_1.1.0           xfun_0.20                 
-#&gt;  [3] bslib_0.2.4                purrr_0.3.4               
-#&gt;  [5] colorspace_2.0-0           vctrs_0.3.6               
-#&gt;  [7] generics_0.1.0             htmltools_0.5.1.1         
-#&gt;  [9] viridisLite_0.3.0          yaml_2.2.1                
-#&gt; [11] utf8_1.1.4                 rlang_0.4.10              
-#&gt; [13] jquerylib_0.1.3            pillar_1.5.1              
-#&gt; [15] later_1.1.0.1              glue_1.4.2                
-#&gt; [17] withr_2.4.1                flexdashboard_0.5.2       
-#&gt; [19] lifecycle_1.0.0            stringr_1.4.0             
-#&gt; [21] munsell_0.5.0              gtable_0.3.0              
-#&gt; [23] htmlwidgets_1.5.3          codetools_0.2-18          
-#&gt; [25] evaluate_0.14              knitr_1.31                
-#&gt; [27] fastmap_1.1.0              httpuv_1.5.5              
-#&gt; [29] crosstalk_1.1.1            fansi_0.4.2               
-#&gt; [31] assertive.base_0.0-9       highr_0.8                 
-#&gt; [33] Rcpp_1.0.6                 xtable_1.8-4              
-#&gt; [35] promises_1.2.0.1           scales_1.1.1              
-#&gt; [37] BiocManager_1.30.10        jsonlite_1.7.2            
-#&gt; [39] mime_0.10                  assertive.types_0.0-3     
-#&gt; [41] assertive.properties_0.0-4 digest_0.6.27             
-#&gt; [43] stringi_1.5.3              dplyr_1.0.5               
-#&gt; [45] shiny_1.6.0                grid_4.0.4                
-#&gt; [47] tools_4.0.4                ymlthis_0.1.3             
-#&gt; [49] sass_0.3.1                 lazyeval_0.2.2            
-#&gt; [51] tibble_3.1.0               crayon_1.4.1              
-#&gt; [53] tidyr_1.1.3                pkgconfig_2.0.3           
-#&gt; [55] ellipsis_0.3.1             data.table_1.14.0         
-#&gt; [57] rmarkdown_2.7              httr_1.4.2                
-#&gt; [59] R6_2.5.0                   assertive.sets_0.0-3      
-#&gt; [61] compiler_4.0.4</code></pre>
+#&gt;  [1] tidyr_1.3.0                sass_0.4.7                
+#&gt;  [3] utf8_1.2.3                 generics_0.1.3            
+#&gt;  [5] stringi_1.7.12             digest_0.6.33             
+#&gt;  [7] evaluate_0.21              grid_4.3.1                
+#&gt;  [9] fastmap_1.1.1              jsonlite_1.8.7            
+#&gt; [11] ymlthis_0.1.7              assertive.sets_0.0-3      
+#&gt; [13] assertive.types_0.0-3      promises_1.2.1            
+#&gt; [15] BiocManager_1.30.22        httr_1.4.7                
+#&gt; [17] purrr_1.0.2                fansi_1.0.4               
+#&gt; [19] viridisLite_0.4.2          crosstalk_1.2.0           
+#&gt; [21] scales_1.2.1               lazyeval_0.2.2            
+#&gt; [23] codetools_0.2-19           jquerylib_0.1.4           
+#&gt; [25] shiny_1.7.5                assertive.properties_0.0-5
+#&gt; [27] cli_3.6.1                  rlang_1.1.1               
+#&gt; [29] ellipsis_0.3.2             munsell_0.5.0             
+#&gt; [31] withr_2.5.0                cachem_1.0.8              
+#&gt; [33] yaml_2.3.7                 tools_4.3.1               
+#&gt; [35] dplyr_1.1.2                colorspace_2.1-0          
+#&gt; [37] httpuv_1.6.11              mime_0.12                 
+#&gt; [39] vctrs_0.6.3                R6_2.5.1                  
+#&gt; [41] lifecycle_1.0.3            stringr_1.5.0             
+#&gt; [43] htmlwidgets_1.6.2          assertive.base_0.0-9      
+#&gt; [45] fontawesome_0.5.2          pkgconfig_2.0.3           
+#&gt; [47] later_1.3.1                bslib_0.5.1               
+#&gt; [49] pillar_1.9.0               gtable_0.3.4              
+#&gt; [51] Rcpp_1.0.11                glue_1.6.2                
+#&gt; [53] data.table_1.14.8          xfun_0.40                 
+#&gt; [55] tibble_3.2.1               tidyselect_1.2.0          
+#&gt; [57] highr_0.10                 rstudioapi_0.15.0         
+#&gt; [59] knitr_1.43                 xtable_1.8-4              
+#&gt; [61] htmltools_0.5.6            rmarkdown_2.24            
+#&gt; [63] compiler_4.3.1             flexdashboard_0.6.2</code></pre>
 </div>
 
 
@@ -583,6 +709,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
